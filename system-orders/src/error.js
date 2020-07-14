@@ -1,5 +1,5 @@
 import { PureComponent } from 'react'
-
+import t from 'prop-types'
 class ErrorBoundary extends PureComponent {
   state = { hasError: false }
 
@@ -16,6 +16,10 @@ class ErrorBoundary extends PureComponent {
   render () {
     return this.props.children(this.state.hasError)
   }
+}
+
+ErrorBoundary.propTypes = {
+  children: t.func.isRequired
 }
 
 export default ErrorBoundary
