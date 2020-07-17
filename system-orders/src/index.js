@@ -11,7 +11,7 @@ ReactDOM.render(
       {(hasError) => (
         <App hasError={hasError} />
       )}
-    </ErrorBoundary>,
+    </ErrorBoundary>
   </React.StrictMode>,
   document.getElementById('root')
 )
