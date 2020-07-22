@@ -1,10 +1,10 @@
-import React, { PureComponent } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import styled from 'styled-components'
 import firebase from 'firebase'
 import { Button, Grid } from '@material-ui/core'
 import { ReactComponent as Logo } from './logo.svg'
 
-var firebaseConfig = {
+const firebaseConfig = {
   apiKey: 'AIzaSyC16DJup_T8W3gapBw3GL859_FX79QbSSI',
   authDomain: 'pizza-love-k.firebaseapp.com',
   databaseURL: 'https://pizza-love-k.firebaseio.com',
@@ -18,73 +18,71 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig)
 firebase.analytics()
 
-class Login extends PureComponent {
-  state = {
+function Login () {
+  const [userInfo, setUserInfo] = useState({
     isUserLoggedIn: false,
     user: null
-  }
+  })
 
-  componentDidMount () {
+  const { isUserLoggedIn, user } = userInfo
+
+  useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
-      this.setState({
+      setUserInfo({
         isUserLoggedIn: !!user,
         user
       })
     })
-  }
+  }, [])
 
-  login () {
+  const login = useCallback(() => {
     const provider = new firebase.auth.GithubAuthProvider()
     firebase.auth().signInWithRedirect(provider)
-  }
+  }, [])
 
-  logout = () => {
+  const logout = useCallback(() => {
     firebase.auth().signOut().then(() => {
       console.log('deslogou')
-      this.setState({
+      setUserInfo({
         isUserLoggedIn: false,
         user: null
       })
     })
-  }
+  }, [])
 
-  render () {
-    const { isUserLoggedIn, user } = this.state
-
-    return (
-      <Container>
-        <Grid container justify='center' spacing={10}>
-          <Grid item>
-            <Logo width={200} height={200} />
-          </Grid>
-
-          <Grid item xs={12} container justify='center'>
-            {isUserLoggedIn && (
-              <>
-                <pre>{user.displayName}</pre>
-                <Button
-                  variant='contained'
-                  fullWidth
-                  // eslint-disable-next-line react/jsx-handler-names
-                  onClick={this.logout}
-                >
-                  Deslogar
-                </Button>
-              </>
-            )}
-
-            {!isUserLoggedIn && (
-              // eslint-disable-next-line react/jsx-handler-names
-              <GithubButton onClick={this.login}>
-                Entrar com github
-              </GithubButton>
-            )}
-
-          </Grid>
+  return (
+    <Container>
+      <Grid container justify='center' spacing={10}>
+        <Grid item>
+          <Logo width={200} height={200} />
         </Grid>
-      </Container>
-    )
-  }
+
+        <Grid item xs={12} container justify='center'>
+          {isUserLoggedIn && (
+            <>
+              <pre>{user.displayName}</pre>
+              <Button
+                variant='contained'
+                fullWidth
+                // eslint-disable-next-line react/jsx-handler-names
+                onClick={logout}
+              >
+                Deslogar
+              </Button>
+            </>
+          )}
+
+          {!isUserLoggedIn && (
+            // eslint-disable-next-line react/jsx-handler-names
+            <GithubButton onClick={login}>
+              Entrar com github
+            </GithubButton>
+          )}
+
+        </Grid>
+      </Grid>
+    </Container>
+  )
 }
 
 const Container = styled.div`
