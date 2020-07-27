@@ -1,41 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { Button, Grid } from '@material-ui/core'
 import { ReactComponent as Logo } from './logo.svg'
 
-import firebase from '../../services/firebase'
+import { AuthContext } from '../../contexts/auth'
 
 function Login () {
-  const [userInfo, setUserInfo] = useState({
-    isUserLoggedIn: false,
-    user: null
-  })
-
-  const { isUserLoggedIn, user } = userInfo
-
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
-      setUserInfo({
-        isUserLoggedIn: !!user,
-        user
-      })
-    })
-  }, [])
-
-  const login = useCallback(() => {
-    const provider = new firebase.auth.GithubAuthProvider()
-    firebase.auth().signInWithRedirect(provider)
-  }, [])
-
-  const logout = useCallback(() => {
-    firebase.auth().signOut().then(() => {
-      console.log('deslogou')
-      setUserInfo({
-        isUserLoggedIn: false,
-        user: null
-      })
-    })
-  }, [])
+  const { login } = useContext(AuthContext)
 
   return (
     <Container>
@@ -45,28 +16,9 @@ function Login () {
         </Grid>
 
         <Grid item xs={12} container justify='center'>
-          {isUserLoggedIn && (
-            <>
-              <pre>{user.displayName}</pre>
-              <Button
-                variant='contained'
-                fullWidth
-                // eslint-disable-next-line react/jsx-handler-names
-                onClick={logout}
-              >
-                Deslogar
-              </Button>
-            </>
-          )}
-
-          {!isUserLoggedIn && (
-            <>
-              <GithubButton onClick={login}>
-                Entrar com github
-              </GithubButton>
-            </>
-          )}
-
+          <GithubButton onClick={login}>
+            Entrar com github
+          </GithubButton>
         </Grid>
       </Grid>
     </Container>
