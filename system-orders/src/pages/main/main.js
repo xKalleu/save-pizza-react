@@ -2,16 +2,16 @@ import React, { useState, useContext } from 'react'
 import styled from 'styled-components'
 import {
   AppBar,
-  Toolbar as MaterialToolbar,
   IconButton,
-  Typography,
   Menu,
-  MenuItem
+  MenuItem,
+  Toolbar as MaterialToolbar,
+  Typography
 } from '@material-ui/core'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 
 import { AuthContext } from '../../contexts/auth'
-import { ReactComponent as MainLogo } from '../login/logo.svg'
+import { ReactComponent as MainLogo } from '../../images/logo.svg'
 
 function MainPage () {
   const [anchorElement, setAnchorElement] = useState(null)
