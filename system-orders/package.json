@@ -60,6 +60,7 @@
     "eslint-plugin-promise": "4.2.1",
     "eslint-plugin-react": "7.20.3",
     "eslint-plugin-standard": "4.0.1",
+    "react-hot-loader": "4.12.21",
     "snazzy": "8.0.0",
     "standard": "14.3.4"
   }
